@@ -1,0 +1,70 @@
+name: Open-XiaoAI HA Gateway
+version: "1.0.9"
+slug: open-xiaoai-ha-gateway
+description: 小爱音箱语音网关：自定义唤醒词唤醒后接入 Home Assistant 对话
+url: https://github.com/jenihk/ha-addon-open-xiaoai
+arch:
+  - aarch64
+  - amd64
+init: false
+startup: application
+boot: auto
+ports:
+  4399/tcp: 4399
+  9092/tcp: 9092
+ports_description:
+  4399/tcp: 音箱 Client WebSocket
+  9092/tcp: HTTP API（可选）
+map:
+  - config:rw
+options:
+  use_ui_config: true
+  auto_download_models: true
+  github_proxy: ""
+  hf_endpoint: https://hf-mirror.com
+  ha_base_url: http://homeassistant:8123
+  ha_token: ""
+  default_agent_id: conversation.extended_openai_conversation
+  doubao_api_key: ""
+  default_tts_speaker: xiaoai
+  wake_entries:
+    - keyword: 海绵宝宝
+      agent_id: conversation.hai_mian_bao_bao
+      tts_speaker: zh_male_liangsangmengzai_uranus_bigtts
+    - keyword: 你好小薇
+      agent_id: conversation.ni_hao_xiao_wei
+      tts_speaker: zh_female_vv_uranus_bigtts
+  kws_keywords_score: 0.8
+  kws_keywords_threshold: 0.08
+  kws_vad_threshold: 0.02
+  kws_min_silence_duration: 480
+  vad_threshold: 0.20
+  vad_min_speech_duration: 250
+  vad_min_silence_duration: 500
+  audio_input_gain: 5.0
+  audio_input_conversation_gain: 1.5
+  api_server_enable: false
+schema:
+  use_ui_config: bool
+  auto_download_models: bool
+  github_proxy: str
+  hf_endpoint: str
+  ha_base_url: str
+  ha_token: password
+  default_agent_id: str
+  doubao_api_key: password
+  default_tts_speaker: str
+  wake_entries:
+    - keyword: str
+      agent_id: str
+      tts_speaker: "str?"
+  kws_keywords_score: "float(0.1,2.0)"
+  kws_keywords_threshold: "float(0.01,1.0)"
+  kws_vad_threshold: "float(0.001,1.0)"
+  kws_min_silence_duration: "int(100,2000)"
+  vad_threshold: "float(0.01,1.0)"
+  vad_min_speech_duration: "int(50,2000)"
+  vad_min_silence_duration: "int(100,3000)"
+  audio_input_gain: "float(0.5,20.0)"
+  audio_input_conversation_gain: "float(0.5,5.0)"
+  api_server_enable: bool

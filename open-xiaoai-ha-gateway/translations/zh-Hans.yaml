@@ -1,0 +1,61 @@
+configuration:
+  use_ui_config:
+    name: 使用 UI 配置
+    description: 根据界面选项自动生成配置；关闭后可手动编辑 config.py。
+  auto_download_models:
+    name: 自动下载模型
+    description: 首次启动自动下载缺失的语音模型（约 340MB）。
+  github_proxy:
+    name: GitHub 代理前缀
+    description: 模型下载走 GitHub 加速代理；留空自动尝试常见代理，例如填 https://ghfast.top/。
+  hf_endpoint:
+    name: HF 镜像地址
+    description: Paraformer 模型下载源，默认 https://hf-mirror.com，可换成其他镜像。
+  ha_base_url:
+    name: HA 地址
+    description: 加载项与 HA 同机时保持默认 http://homeassistant:8123 即可。
+  ha_token:
+    name: HA 访问令牌
+    description: 在 HA 个人资料 → 安全 中创建长期访问令牌（Long-Lived Access Token）。
+  default_agent_id:
+    name: 默认对话 Agent
+    description: 未配置路由的唤醒词使用该 agent；留空则用 HA 默认。
+  doubao_api_key:
+    name: 豆包 TTS API Key
+    description: 火山引擎语音合成密钥；留空则用小爱原生 TTS。
+  default_tts_speaker:
+    name: 默认音色
+    description: 填 xiaoai 使用小爱原生 TTS；也可填豆包音色 ID 作为默认。
+  wake_entries:
+    name: 唤醒词路由
+    description: 每个唤醒词一条：唤醒词、对话 Agent、音色 ID（音色可留空，用默认音色）。
+  kws_keywords_score:
+    name: 唤醒词评分
+    description: 唤醒词置信度加成，越大越难触发。
+  kws_keywords_threshold:
+    name: 唤醒词阈值
+    description: 唤醒词检测阈值，越小越灵敏。
+  kws_vad_threshold:
+    name: 唤醒链路 VAD 阈值
+    description: 仅影响唤醒词检测，不影响连续对话监听。
+  kws_min_silence_duration:
+    name: 唤醒静默时长（毫秒）
+    description: 唤醒词检测时的最小静默时长，超过则判定说完。
+  vad_threshold:
+    name: 对话 VAD 阈值
+    description: 连续对话语音检测阈值，越小越灵敏。
+  vad_min_speech_duration:
+    name: 最短语音时长（毫秒）
+    description: 连续对话中判定为有效语音的最短时长。
+  vad_min_silence_duration:
+    name: 最短静默时长（毫秒）
+    description: 连续对话结束判定用的静默时长，说话没说完可调大。
+  audio_input_gain:
+    name: 唤醒链路增益
+    description: 仅作用于唤醒词，远场唤醒不灵敏时可调大。
+  audio_input_conversation_gain:
+    name: 连续对话增益
+    description: 仅作用于连续对话的 VAD 与识别，远场对话可调大，建议不超过 2.5。
+  api_server_enable:
+    name: HTTP API
+    description: 默认关闭；需要外部脚本/调试调用时再开启（端口 9092）。

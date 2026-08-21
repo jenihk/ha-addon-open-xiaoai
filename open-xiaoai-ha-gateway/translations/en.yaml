@@ -1,0 +1,61 @@
+configuration:
+  use_ui_config:
+    name: Use UI configuration
+    description: Generate config.py from the UI options. Turn off to edit config.py manually.
+  auto_download_models:
+    name: Auto-download models
+    description: Download missing speech models on first start (~340MB).
+  github_proxy:
+    name: GitHub proxy prefix
+    description: Accelerate GitHub model downloads via a proxy, e.g. https://ghfast.top/; common proxies are tried automatically when empty.
+  hf_endpoint:
+    name: HF mirror endpoint
+    description: Source for the Paraformer model, default https://hf-mirror.com.
+  ha_base_url:
+    name: Home Assistant URL
+    description: Default http://homeassistant:8123 works when the add-on runs on the same host.
+  ha_token:
+    name: Home Assistant token
+    description: Long-lived access token from HA → your profile → Security.
+  default_agent_id:
+    name: Default conversation agent
+    description: Used for wake words without a route; leave empty for the HA default.
+  doubao_api_key:
+    name: Doubao TTS API key
+    description: Volcengine voice synthesis key; leave empty to use the XiaoAi native TTS.
+  default_tts_speaker:
+    name: Default TTS voice
+    description: Use "xiaoai" for the XiaoAi native TTS, or a Doubao voice ID.
+  wake_entries:
+    name: Wake word routing
+    description: One entry per wake word: keyword, conversation agent and TTS voice (voice optional).
+  kws_keywords_score:
+    name: KWS keyword score
+    description: Wake word confidence boost; higher means harder to trigger.
+  kws_keywords_threshold:
+    name: KWS keyword threshold
+    description: Wake word detection threshold; lower is more sensitive.
+  kws_vad_threshold:
+    name: KWS VAD threshold
+    description: VAD threshold for the wake word path only.
+  kws_min_silence_duration:
+    name: KWS min silence (ms)
+    description: Minimum silence after the wake word before it counts as spoken.
+  vad_threshold:
+    name: Conversation VAD threshold
+    description: Voice detection threshold for continuous conversation; lower is more sensitive.
+  vad_min_speech_duration:
+    name: Min speech duration (ms)
+    description: Shortest speech segment counted as a valid utterance.
+  vad_min_silence_duration:
+    name: Min silence duration (ms)
+    description: Silence that ends a conversation turn; increase if your speech gets cut off.
+  audio_input_gain:
+    name: Wake-up gain
+    description: Gain for the wake word path only; increase for far-field wake-up.
+  audio_input_conversation_gain:
+    name: Conversation gain
+    description: Gain for conversation VAD and ASR; keep at or below 2.5.
+  api_server_enable:
+    name: HTTP API
+    description: Off by default; enable only if external scripts need it (port 9092).
