@@ -13,6 +13,6 @@ LABEL \
 COPY run.sh /run.sh
 COPY generate_config.py /generate_config.py
 COPY download_models.sh /download_models.sh
-RUN chmod a+x /run.sh
+RUN chmod a+x /run.sh /download_models.sh
 
 CMD ["/run.sh"]
