@@ -50,11 +50,8 @@ Home Assistant Assist（conversation.process，如 extended_openai_conversation�
 
 ## 前置条件
 
-1. 应用镜像已发布到 GHCR（加载项直接复用预构建镜像，不在设备上编译）：
-   - 把 [open-xiaoai-ha-gateway](https://github.com/jenihk/open-xiaoai-ha-gateway) 推送到 GitHub（`main` 分支），触发 `.github/workflows/build-docker.yml` 构建并推送 `ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`（amd64 + arm64 双架构）。
-   - 确认镜像存在：`docker manifest inspect ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`
-2. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
-3. 模型文件：VAD + KWS + Paraformer（见下文「模型文件」）。
+1. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
+2. 模型文件：VAD + KWS + Paraformer（见下文「模型文件」；开启 `auto_download_models` 可自动下载）。
 
 ## 安装
 
@@ -183,6 +180,16 @@ ha-addon-open-xiaoai/
     ├── icon.png / logo.png        # 加载项图标
     └── README.md                  # 加载项详情页说明
 ```
+
+## 维护者：镜像构建与发布
+
+加载项直接复用应用仓库 [open-xiaoai-ha-gateway](https://github.com/jenihk/open-xiaoai-ha-gateway) 预构建的多架构镜像（amd64 + arm64），不在用户设备上编译。
+
+- 修改服务端代码后，把 `open-xiaoai-ha-gateway` 推送到 GitHub（`main` 分支），触发 `.github/workflows/build-docker.yml` 构建并推送 `ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`。
+- 验证镜像：`docker manifest inspect ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`
+- 镜像更新后，修改本加载项 `config.yaml` 的 `version` 提升版本号，用户更新加载项时即会重新构建并拉取新镜像。
+
+> 普通用户安装无需关心以上内容。
 
 ## 常见问题
 

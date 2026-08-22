@@ -15,10 +15,8 @@
 
 ## 前置条件
 
-1. 应用镜像已发布到 GHCR（加载项直接复用预构建镜像）：
-   `docker manifest inspect ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`
-2. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
-3. 模型文件：VAD + KWS + Paraformer（见「模型文件」）。
+1. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
+2. 模型文件：VAD + KWS + Paraformer（见「模型文件」；开启 `auto_download_models` 可自动下载）。
 
 ## 安装
 
