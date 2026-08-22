@@ -22,11 +22,11 @@
 | | 本项目 | open-xiaoai-bridge |
 |---|---|---|
 | 定位 | 小爱音箱 → HA Assist 的轻量语音网关 | 通用小爱音箱接入框架 |
-| 依赖 | 仅 HA 对话 + 豆包 TTS | OpenClaw / 龙虾 / skill 等外部组件 |
+| 依赖 | 仅 HA Assist 对话（LLM 由 conversation agent 提供）+ 豆包 TTS | OpenClaw / 龙虾 / skill 等外部组件 |
 | 部署 | 一个 Docker 镜像 / HA 加载项 | 需要自行搭建多个服务 |
 | 可扩展性 | 聚焦 HA 场景，改动小 | 更强，可接入任意 agent 框架 |
 
-简化的意义：如果目的只是让小爱音箱接入 Home Assistant 控制家居，本项目无需部署 OpenClaw、skill 等复杂组件，配置和排障都更简单；原项目的优势在于通用性和可扩展性，适合需要接入其他大模型/agent 框架的玩法。
+简化的意义：本项目把链路精简为「小爱音箱 → HA Assist 对话（conversation agent 可接入任意大模型）→ TTS 播放」，不需要部署 OpenClaw、skill 等额外组件，配置和排障都更简单；对话智能由 HA 中的 conversation agent 提供（如 extended OpenAI Conversation 接入的大模型），并非仅限家居控制。原项目的优势在于通用性和可扩展性，适合需要接入其他大模型/agent 框架的玩法。
 
 ## 架构
 
@@ -205,16 +205,6 @@ ha-addon-open-xiaoai/
     ├── icon.png / logo.png        # 加载项图标
     └── README.md                  # 加载项详情页说明
 ```
-
-## 维护者：镜像构建与发布
-
-加载项直接复用应用仓库 [open-xiaoai-ha-gateway](https://github.com/jenihk/open-xiaoai-ha-gateway) 预构建的多架构镜像（amd64 + arm64），不在用户设备上编译。
-
-- 修改服务端代码后，把 `open-xiaoai-ha-gateway` 推送到 GitHub（`main` 分支），触发 `.github/workflows/build-docker.yml` 构建并推送 `ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`。
-- 验证镜像：`docker manifest inspect ghcr.io/jenihk/open-xiaoai-ha-gateway:latest`
-- 镜像更新后，修改本加载项 `config.yaml` 的 `version` 提升版本号，用户更新加载项时即会重新构建并拉取新镜像。
-
-> 普通用户安装无需关心以上内容。
 
 ## 常见问题
 
