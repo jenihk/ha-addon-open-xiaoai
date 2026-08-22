@@ -28,7 +28,7 @@ configuration:
     description: Use "xiaoai" for the XiaoAi native TTS, or a Doubao voice ID.
   wake_entries:
     name: Wake word routing
-    description: One entry per wake word: keyword, conversation agent and TTS voice (voice optional).
+    description: "One entry per wake word: keyword, conversation agent and TTS voice (voice optional)."
   kws_keywords_score:
     name: KWS keyword score
     description: Wake word confidence boost; higher means harder to trigger.
