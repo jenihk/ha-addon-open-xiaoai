@@ -52,6 +52,7 @@ Home Assistant Assist（conversation.process，如 extended_openai_conversation�
 
 1. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
 2. 模型文件：VAD + KWS + Paraformer（见下文「模型文件」；开启 `auto_download_models` 可自动下载）。
+3. 音箱端已安装 open-xiaoai-client（见下文「音箱端 Client」）。
 
 ## 安装
 
@@ -62,6 +63,30 @@ https://github.com/jenihk/ha-addon-open-xiaoai
 ```
 
 然后在商店中找到 **Open-XiaoAI HA Gateway**，安装并启动。
+
+## 音箱端 Client（必装）
+
+本加载项只是服务端。要让音箱真正接入，还需要在**小爱音箱上安装客户端**（open-xiaoai-client，Rust 编写，负责把麦克风音频流和原生识别结果转发给服务端）。前提是音箱已完成刷机、取得 root 权限。
+
+简要步骤（完整教程见 [open-xiaoai-client/README.md](https://github.com/jenihk/open-xiaoai-ha-gateway/tree/main/open-xiaoai-client)）：
+
+1. 刷机并 SSH 登录音箱（参考 [刷机教程](https://github.com/idootop/open-xiaoai/blob/main/docs/flash.md)）。
+2. 创建目录并填写服务端地址（`<HA 设备 IP>` 换成加载项所在 HA 设备的 IP）：
+
+   ```shell
+   mkdir -p /data/open-xiaoai
+   echo 'ws://<HA 设备 IP>:4399' > /data/open-xiaoai/server.txt
+   ```
+
+3. 安装客户端并设置开机自启：
+
+   ```shell
+   curl -sSfL https://gitee.com/coderzc/open-xiaoai/raw/main/packages/client-rust/init.sh | sh
+   curl -L -o /data/init.sh https://gitee.com/coderzc/open-xiaoai/raw/main/packages/client-rust/boot.sh
+   reboot
+   ```
+
+重启后音箱会自动连接加载项的 `4399` 端口。客户端与加载项之间**默认不鉴权**；如需开启 token 鉴权，参照 server 仓库 README（当前加载项未提供该配置项）。
 
 ## 配置
 
