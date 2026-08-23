@@ -13,6 +13,39 @@
 - **本地 VAD + Paraformer ASR**：离线中文识别，不依赖云端 ASR
 - **轻量部署**：复用预构建的 amd64 + arm64 多架构镜像，HAOS 上安装即用，不在设备上编译
 
+## 与 open-xiaoai-bridge 的关系
+
+本项目基于开源项目 [open-xiaoai-bridge](https://github.com/xiaoayu-code/open-xiaoai-bridge) 简化改造而来：
+
+| | 本项目 | open-xiaoai-bridge |
+|---|---|---|
+| 定位 | 小爱音箱 → HA Assist 的轻量语音网关 | 通用小爱音箱接入框架 |
+| 依赖 | 仅 HA Assist 对话（LLM 由 conversation agent 提供）+ 豆包 TTS | OpenClaw / 龙虾 / skill 等外部组件 |
+| 部署 | 一个 Docker 镜像 / HA 加载项 | 需要自行搭建多个服务 |
+| 可扩展性 | 聚焦 HA 场景，改动小 | 更强，可接入任意 agent 框架 |
+
+简化的意义：本项目把链路精简为「小爱音箱 → HA Assist 对话（conversation agent 可接入任意大模型）→ TTS 播放」，不需要部署 OpenClaw、skill 等额外组件，配置和排障都更简单；对话智能由 HA 中的 conversation agent 提供（如 extended OpenAI Conversation 接入的大模型），并非仅限家居控制。原项目的优势在于通用性和可扩展性，适合需要接入其他大模型/agent 框架的玩法。
+
+## 架构
+
+```text
+小爱音箱
+   │  语音流（WebSocket，端口 4399）
+   ▼
+open-xiaoai-ha-gateway（本加载项）
+   │  1. 本地 KWS 检测自定义唤醒词
+   │  2. 唤醒后本地 VAD 采集语音 → Paraformer ASR 转文字
+   │  3. 按唤醒词路由到对应 conversation agent
+   ▼
+Home Assistant Assist（conversation.process，如 extended_openai_conversation）
+   │  回复文字
+   ▼
+豆包 TTS（火山引擎语音合成/声音复刻）
+   │  PCM 音频流
+   ▼
+小爱音箱播放
+```
+
 ## 前置条件
 
 1. Home Assistant 中已配置至少一个 conversation agent（如 extended OpenAI Conversation），并通过 Assist 暴露所需实体。
