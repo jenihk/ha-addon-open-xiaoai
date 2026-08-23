@@ -1,5 +1,5 @@
 name: Open-XiaoAI HA Gateway
-version: "1.0.11"
+version: "1.0.12"
 slug: open-xiaoai-ha-gateway
 description: 小爱音箱语音网关：自定义唤醒词唤醒后接入 Home Assistant 对话
 url: https://github.com/jenihk/ha-addon-open-xiaoai
