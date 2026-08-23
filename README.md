@@ -107,6 +107,7 @@ https://github.com/jenihk/ha-addon-open-xiaoai
 | `default_agent_id` | 否 | 默认 conversation agent（未匹配路由时使用，留空用 HA 默认） |
 | `doubao_api_key` | 否 | 豆包 TTS API Key（密码框显示；不填则用 `xiaoai` 原生 TTS） |
 | `default_tts_speaker` | 否 | 默认音色；填 `xiaoai` 用小爱原生 TTS |
+| `asr_replacements` | 否 | ASR 纠错表，每行 `错误词:正确词`，自动纠正本地识别结果 |
 | `wake_entries` | 是 | 唤醒词路由表，每行一条，格式见下 |
 | `api_server_enable` | 否 | HTTP API（端口 9092），默认关闭，仅外部脚本/调试需要时开启 |
 
@@ -144,6 +145,19 @@ https://github.com/jenihk/ha-addon-open-xiaoai
 | `vad_min_silence_duration` | 500 | 100–3000 | 最小静默时长（ms），说话没说完可调大 |
 | `audio_input_gain` | 5.0 | 0.5–20.0 | 唤醒链路增益（远场唤醒可调大） |
 | `audio_input_conversation_gain` | 1.5 | 0.5–5.0 | 连续对话增益（远场对话可调大，建议不超过 2.5） |
+
+#### ASR 纠错表（asr_replacements）
+
+本地识别（Paraformer）偶尔会把家居设备名听错。大模型虽然有一定纠错能力，但识别错误率过高时同样无法理解指令——例如你说「关掉主卧和次卧空调」，被识别成「关掉关注我和次我空调」时，大模型就可能理解不了或执行错对象。
+
+在 `asr_replacements` 里每行添加一条 `错误词:正确词`（纯文本子串替换，识别结果会被自动纠正）：
+
+```text
+次我:次卧
+主我:主卧
+```
+
+注意：替换作用于整句，错误词应选择「几乎不会作为正常词出现」的写法，不要映射「关注我」这类正常词，避免误伤正常语句。
 
 UI 配置会覆盖生成 `config.py`（手动改的内容会被覆盖），适合大多数用户。
 

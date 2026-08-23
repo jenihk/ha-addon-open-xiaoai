@@ -26,6 +26,9 @@ configuration:
   default_tts_speaker:
     name: Default TTS voice
     description: Use "xiaoai" for the XiaoAi native TTS, or a Doubao voice ID.
+  asr_replacements:
+    name: ASR replacements
+    description: One "wrong:right" pair per line; applied to local ASR text. Avoid common words as the wrong form.
   wake_entries:
     name: Wake word routing
     description: "One entry per wake word: keyword, conversation agent and TTS voice (voice optional)."

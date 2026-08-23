@@ -26,6 +26,9 @@ configuration:
   default_tts_speaker:
     name: 默认音色
     description: 填 xiaoai 使用小爱原生 TTS；也可填豆包音色 ID 作为默认。
+  asr_replacements:
+    name: ASR 纠错表
+    description: 每行一条「错误词:正确词」，本地识别结果会自动纠正；错误词避免使用正常词。
   wake_entries:
     name: 唤醒词路由
     description: 每个唤醒词一条：唤醒词、对话 Agent、音色 ID（音色可留空，用默认音色）。

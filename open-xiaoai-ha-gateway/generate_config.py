@@ -82,20 +82,7 @@ APP_CONFIG = {
         "model": "paraformer",
         "int8": True,
         "num_threads": 4,
-        "replacements": {
-            # 家居控制常用纠错（子串替换：错误写法 -> 正确写法）
-            # 注意：纯文本替换作用于整句，错误词应选「几乎不会作为正常词出现」的写法，
-            # 不要映射「关注我」这类正常词，避免误伤正常语句。
-            "次我": "次卧",
-            "主我": "主卧",
-            "课厅": "客厅",
-            "出房": "厨房",
-            "卫间": "卫生间",
-            "空条": "空调",
-            "点视": "电视",
-            "冰乡": "冰箱",
-            "热湿器": "热水器",
-        },
+        "replacements": @ASR_REPLACEMENTS@,
     },
     "xiaoai": {
         "continuous_conversation_mode": True,
@@ -273,6 +260,20 @@ def _parse_wake_entries(opts):
     return keywords, routes, voices
 
 
+def _parse_replacements(items):
+    """解析 UI 纠错表（每行：错误词:正确词），返回 {错误词: 正确词}。"""
+    result = {}
+    for item in items or []:
+        item = str(item).strip()
+        if not item or ":" not in item:
+            continue
+        old, _, new = item.partition(":")
+        old, new = old.strip(), new.strip()
+        if old and new:
+            result[old] = new
+    return result
+
+
 def build_config(opts):
     default_agent = (
         str(opts.get("default_agent_id", "")) or
@@ -290,6 +291,7 @@ def build_config(opts):
     )
 
     keywords, routes, voices = _parse_wake_entries(opts)
+    replacements = _parse_replacements(opts.get("asr_replacements", []))
 
     # 高级数字字段：新 UI 独立字段优先，旧版 advanced_config 仍可兼容
     advanced = {k: dict(v) for k, v in DEFAULTS.items()}
@@ -320,6 +322,7 @@ def build_config(opts):
     content = content.replace("@DEFAULT_TTS_SPEAKER@", default_speaker)
     content = content.replace("@DOUBAO_DEFAULT_SPEAKER@", doubao_default_speaker)
     content = content.replace("@SESSION_VOICES@", _py_dict(voices))
+    content = content.replace("@ASR_REPLACEMENTS@", _py_dict(replacements))
     content += (
         "\n\n# 高级配置覆盖（来自 UI 的数字字段，路径如 kws.keywords_score）\n"
         "_ADVANCED = " + _py_dict(advanced) + "\n\n"

@@ -1,5 +1,5 @@
 name: Open-XiaoAI HA Gateway
-version: "1.0.13"
+version: "1.0.14"
 slug: open-xiaoai-ha-gateway
 description: 小爱音箱语音网关：自定义唤醒词唤醒后接入 Home Assistant 对话
 url: https://github.com/jenihk/ha-addon-open-xiaoai
@@ -34,6 +34,16 @@ options:
     - keyword: 你好小薇
       agent_id: conversation.ni_hao_xiao_wei
       tts_speaker: zh_female_vv_uranus_bigtts
+  asr_replacements:
+    - "次我:次卧"
+    - "主我:主卧"
+    - "课厅:客厅"
+    - "出房:厨房"
+    - "卫间:卫生间"
+    - "空条:空调"
+    - "点视:电视"
+    - "冰乡:冰箱"
+    - "热湿器:热水器"
   kws_keywords_score: 0.8
   kws_keywords_threshold: 0.08
   kws_vad_threshold: 0.02
@@ -58,6 +68,8 @@ schema:
     - keyword: str
       agent_id: str
       tts_speaker: "str?"
+  asr_replacements:
+    - str
   kws_keywords_score: "float(0.1,2.0)"
   kws_keywords_threshold: "float(0.01,1.0)"
   kws_vad_threshold: "float(0.001,1.0)"
